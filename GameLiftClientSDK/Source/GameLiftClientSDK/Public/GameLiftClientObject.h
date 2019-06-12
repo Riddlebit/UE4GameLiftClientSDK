@@ -73,4 +73,8 @@ public:
 	**/
 	UFUNCTION(BlueprintCallable, Category = "GameLift Client Object")	
 	UGameLiftCreatePlayerSession* CreatePlayerSession(FString GameSessionID, FString UniquePlayerID);
+
+
+	UFUNCTION(BlueprintCallable, Category = "GameLift Client Object")
+	UGameLiftSearchGameSessions* SearchGameSessions(FString AliasID);
 };

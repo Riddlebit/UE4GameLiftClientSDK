@@ -254,3 +254,80 @@ void UGameLiftCreatePlayerSession::OnCreatePlayerSession(const Aws::GameLift::Ga
 	}
 #endif
 }
+
+UGameLiftSearchGameSessions* UGameLiftSearchGameSessions::SearchGameSessions(FString AliasID)
+{
+#if WITH_GAMELIFTCLIENTSDK
+	UGameLiftSearchGameSessions* Proxy = NewObject<UGameLiftSearchGameSessions>();
+	Proxy->AliasID = AliasID;
+	return Proxy;
+#endif
+	return nullptr;
+}
+
+EActivateStatus UGameLiftSearchGameSessions::Activate()
+{
+
+#if WITH_GAMELIFTCLIENTSDK
+	if (GameLiftClient)
+	{
+		LOG_NORMAL("Preparing to search for game sessions...");
+
+		if (OnSearchGameSessionsSuccess.IsBound() == false)
+		{
+			LOG_ERROR("No functions were bound to OnSearchGameSessionsSuccess multi-cast delegate! Aborting Activate.");
+			return EActivateStatus::ACTIVATE_NoSuccessCallback;
+		}
+
+		if (OnSearchGameSessionsFailed.IsBound() == false)
+		{
+			LOG_ERROR("No functions were bound to OnSearchGameSessionsFailed multi-cast delegate! Aborting Activate.");
+			return EActivateStatus::ACTIVATE_NoFailCallback;
+		}
+
+		Aws::GameLift::Model::SearchGameSessionsRequest Request;
+		LOG_NORMAL("Setting game session ID: " + AliasID);
+		Request.SetAliasId(TCHAR_TO_UTF8(*AliasID));
+
+		Aws::GameLift::SearchGameSessionsResponseReceivedHandler Handler;
+		Handler = std::bind(&UGameLiftSearchGameSessions::OnSearchGameSessions, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
+
+		LOG_NORMAL("Creating new player session...");
+		GameLiftClient->SearchGameSessionsAsync(Request, Handler);
+		return EActivateStatus::ACTIVATE_Success;
+	}
+	LOG_ERROR("GameLiftClient is null. Did you call CreateGameLiftObject first?");
+#endif
+
+	return EActivateStatus::ACTIVATE_NoGameLift;
+}
+
+void UGameLiftSearchGameSessions::OnSearchGameSessions(const Aws::GameLift::GameLiftClient* Client, const Aws::GameLift::Model::SearchGameSessionsRequest& Request, const Aws::GameLift::Model::SearchGameSessionsOutcome& Outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& Context)
+{
+
+#if WITH_GAMELIFTCLIENTSDK
+	if (Outcome.IsSuccess())
+	{
+		LOG_NORMAL("Received OnSearchGameSessions with Success outcome.");
+		auto SessionList = Outcome.GetResult().GetGameSessions();
+		
+		FString ServerIpAddress = "0.0.0.0";
+		FString ServerPort = "0";
+
+		for (Aws::GameLift::Model::GameSession Session : SessionList) {
+			ServerIpAddress = FString(Session.GetIpAddress().c_str());
+			ServerPort = FString::FromInt(Session.GetPort());
+		}
+
+		OnSearchGameSessionsSuccess.Broadcast(ServerIpAddress, ServerPort);
+	}
+	else
+	{
+		const FString MyErrorMessage = FString(Outcome.GetError().GetMessage().c_str());
+		LOG_ERROR("Received OnSearchGameSessions with failed outcome. Error: " + MyErrorMessage);
+		OnSearchGameSessionsFailed.Broadcast(MyErrorMessage);
+	}
+#endif
+
+}
+

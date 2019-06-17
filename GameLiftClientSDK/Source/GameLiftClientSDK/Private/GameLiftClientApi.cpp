@@ -255,11 +255,12 @@ void UGameLiftCreatePlayerSession::OnCreatePlayerSession(const Aws::GameLift::Ga
 #endif
 }
 
-UGameLiftSearchGameSessions* UGameLiftSearchGameSessions::SearchGameSessions(FString AliasID)
+UGameLiftSearchGameSessions* UGameLiftSearchGameSessions::SearchGameSessions(FString AliasID, bool IsNotFull)
 {
 #if WITH_GAMELIFTCLIENTSDK
 	UGameLiftSearchGameSessions* Proxy = NewObject<UGameLiftSearchGameSessions>();
 	Proxy->AliasID = AliasID;
+	Proxy->IsNotFull = IsNotFull;
 	return Proxy;
 #endif
 	return nullptr;
@@ -288,6 +289,8 @@ EActivateStatus UGameLiftSearchGameSessions::Activate()
 		Aws::GameLift::Model::SearchGameSessionsRequest Request;
 		LOG_NORMAL("Setting game session ID: " + AliasID);
 		Request.SetAliasId(TCHAR_TO_UTF8(*AliasID));
+		if(IsNotFull)
+			Request.SetFilterExpression("hasAvailablePlayerSessions = true");
 
 		Aws::GameLift::SearchGameSessionsResponseReceivedHandler Handler;
 		Handler = std::bind(&UGameLiftSearchGameSessions::OnSearchGameSessions, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
@@ -311,15 +314,13 @@ void UGameLiftSearchGameSessions::OnSearchGameSessions(const Aws::GameLift::Game
 		LOG_NORMAL("Received OnSearchGameSessions with Success outcome.");
 		auto SessionList = Outcome.GetResult().GetGameSessions();
 		
-		FString ServerIpAddress = "0.0.0.0";
-		FString ServerPort = "0";
-
+		TArray<FString> GameSessionIds;
+		
 		for (Aws::GameLift::Model::GameSession Session : SessionList) {
-			ServerIpAddress = FString(Session.GetIpAddress().c_str());
-			ServerPort = FString::FromInt(Session.GetPort());
+			GameSessionIds.Add(FString(Session.GetGameSessionId().c_str()));
 		}
 
-		OnSearchGameSessionsSuccess.Broadcast(ServerIpAddress, ServerPort);
+		OnSearchGameSessionsSuccess.Broadcast(GameSessionIds);
 	}
 	else
 	{

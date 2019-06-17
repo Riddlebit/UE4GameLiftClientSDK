@@ -71,10 +71,10 @@ UGameLiftCreatePlayerSession* UGameLiftClientObject::CreatePlayerSession(FString
 	return nullptr;
 }
 
-UGameLiftSearchGameSessions* UGameLiftClientObject::SearchGameSessions(FString AliasID)
+UGameLiftSearchGameSessions* UGameLiftClientObject::SearchGameSessions(FString AliasID, bool IsNotFull)
 {
 #if WITH_GAMELIFTCLIENTSDK
-	UGameLiftSearchGameSessions* Proxy = UGameLiftSearchGameSessions::SearchGameSessions(AliasID);
+	UGameLiftSearchGameSessions* Proxy = UGameLiftSearchGameSessions::SearchGameSessions(AliasID, IsNotFull);
 	Proxy->GameLiftClient = GameLiftClient;
 	return Proxy;
 #endif

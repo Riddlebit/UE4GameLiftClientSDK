@@ -128,7 +128,7 @@ private:
 	void OnCreatePlayerSession(const Aws::GameLift::GameLiftClient* Client, const Aws::GameLift::Model::CreatePlayerSessionRequest& Request, const Aws::GameLift::Model::CreatePlayerSessionOutcome& Outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& Context);
 };
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnSearchGameSessionsSuccess, const FString&, IPAddress, const FString&, Port);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSearchGameSessionsSuccess, const TArray<FString>&, GameSessionIds);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSearchGameSessionsFailed, const FString&, ErrorMessage);
 UCLASS()
 class GAMELIFTCLIENTSDK_API UGameLiftSearchGameSessions : public UObject
@@ -148,8 +148,9 @@ public:
 private:
 	Aws::GameLift::GameLiftClient* GameLiftClient;
 	FString AliasID;
+	bool IsNotFull;
 
-	static UGameLiftSearchGameSessions* SearchGameSessions(FString AliasID);
+	static UGameLiftSearchGameSessions* SearchGameSessions(FString AliasID, bool IsNotFull);
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "GameLift SearchGameSessions")

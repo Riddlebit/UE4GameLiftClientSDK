@@ -76,5 +76,5 @@ public:
 
 
 	UFUNCTION(BlueprintCallable, Category = "GameLift Client Object")
-	UGameLiftSearchGameSessions* SearchGameSessions(FString AliasID);
+	UGameLiftSearchGameSessions* SearchGameSessions(FString AliasID, bool IsNotFull = true);
 };

@@ -11,6 +11,8 @@ public class AWSCore : ModuleRules
 		PublicDependencyModuleNames.AddRange(new string[] { "Engine", "Core", "CoreUObject", "InputCore", "Projects"});
 		PrivateDependencyModuleNames.AddRange(new string[] { });
 
+		PrivatePCHHeaderFile = "Private/AWSCoreModulePrivatePCH.h";
+
 		string BaseDirectory = System.IO.Path.GetFullPath(System.IO.Path.Combine(ModuleDirectory, "..", ".."));
         string ThirdPartyPath = System.IO.Path.Combine(BaseDirectory, "ThirdParty", "GameLiftClientSDK", Target.Platform.ToString());
         bool bIsThirdPartyPathValid = System.IO.Directory.Exists(ThirdPartyPath);

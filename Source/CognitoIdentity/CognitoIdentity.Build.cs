@@ -5,8 +5,8 @@ public class CognitoIdentity : ModuleRules
 {
 	public CognitoIdentity(ReadOnlyTargetRules Target) : base(Target)
 	{
-		PublicIncludePaths.AddRange(System.IO.Path.Combine(ModuleDirectory, "Public"));
-		PrivateIncludePaths.AddRange(System.IO.Path.Combine(ModuleDirectory, "Private"));
+		PublicIncludePaths.AddRange(new string[] {Path.Combine(ModuleDirectory, "Public")});
+		PrivateIncludePaths.AddRange(new string[] {Path.Combine(ModuleDirectory, "Private")});
 
 		PublicDependencyModuleNames.AddRange(new string[] { "Engine", "Core", "CoreUObject", "InputCore", "Projects" });
 

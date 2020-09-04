@@ -16,7 +16,8 @@ public class CognitoIdentity : ModuleRules
 
 		if (bIsThirdPartyPathValid)
 		{
-			PublicLibraryPaths.Add(ThirdPartyPath);
+			//Deprecated, use full path in PublicAdditionalLibraries.Add()
+			//PublicLibraryPaths.Add(ThirdPartyPath);
 
 			string CognitoLibFile = System.IO.Path.Combine(ThirdPartyPath, "aws-cpp-sdk-cognito-identity.lib");
 			if (File.Exists(CognitoLibFile))
@@ -32,7 +33,7 @@ public class CognitoIdentity : ModuleRules
 			if (File.Exists(CognitoDLLFile))
 			{
                 PublicDelayLoadDLLs.Add("aws-cpp-sdk-cognito-identity.dll");
-                RuntimeDependencies.Add(new RuntimeDependency(CognitoDLLFile));
+                RuntimeDependencies.Add(CognitoDLLFile);
 			}
 			else
 			{

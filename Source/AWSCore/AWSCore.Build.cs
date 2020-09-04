@@ -17,7 +17,8 @@ public class AWSCore : ModuleRules
 
 		if (bIsThirdPartyPathValid)
 		{
-			PublicLibraryPaths.Add(ThirdPartyPath);
+			//Deprecated, use full path when using PublicAdditionalLibraries.Add()
+			//PublicLibraryPaths.Add(ThirdPartyPath);
 			string AWSCoreLibFile = System.IO.Path.Combine(ThirdPartyPath, "aws-cpp-sdk-core.lib");
 			if (File.Exists(AWSCoreLibFile))
 			{
@@ -32,7 +33,7 @@ public class AWSCore : ModuleRules
 			if (File.Exists(AWSCoreDLLFile))
 			{
                 PublicDelayLoadDLLs.Add("aws-cpp-sdk-core.dll");
-                RuntimeDependencies.Add(new RuntimeDependency(AWSCoreDLLFile));
+                RuntimeDependencies.Add(AWSCoreDLLFile);
 			}
 			else
 			{

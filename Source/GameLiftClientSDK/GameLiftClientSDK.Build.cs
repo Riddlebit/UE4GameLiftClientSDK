@@ -20,8 +20,9 @@ public class GameLiftClientSDK : ModuleRules
 		
 		if (bIsThirdPartyPathValid)
 		{
-			Definitions.Add("WITH_GAMELIFTCLIENTSDK=1");
-			PublicLibraryPaths.Add(ThirdPartyPath);
+			PublicDefinitions.Add("WITH_GAMELIFTCLIENTSDK=1");
+			//Deprecated, use full path in PublicAdditionalLibraries.Add()
+			//PublicLibraryPaths.Add(ThirdPartyPath);
 
 			string GameLiftLibFile = System.IO.Path.Combine(ThirdPartyPath, "aws-cpp-sdk-gamelift.lib");			
 			if(File.Exists(GameLiftLibFile))
@@ -37,7 +38,7 @@ public class GameLiftClientSDK : ModuleRules
 			if(File.Exists(GameLiftDLLFile))
 			{
                 PublicDelayLoadDLLs.Add("aws-cpp-sdk-gamelift.dll");
-                RuntimeDependencies.Add(new RuntimeDependency(GameLiftDLLFile));
+                RuntimeDependencies.Add(GameLiftDLLFile);
 			}
 			else
 			{
@@ -56,7 +57,7 @@ public class GameLiftClientSDK : ModuleRules
 		}
 		else
 		{
-			Definitions.Add("WITH_GAMELIFTCLIENTSDK=0");
+			PublicDefinitions.Add("WITH_GAMELIFTCLIENTSDK=0");
 		}
 	}
 }

@@ -1,2 +1,5 @@
 GameLiftClientSDK/Binaries/
 GameLiftClientSDK/Intermediate/
+
+Binaries/*
+Intermediate/*

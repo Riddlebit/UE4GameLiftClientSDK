@@ -1,7 +1,9 @@
-#include "CognitoIdentityModulePrivatePCH.h"
 #include "CognitoIdentityModule.h"
 #include "GameLiftClientSDK/Public/GameLiftClientGlobals.h"
-#include "IPluginManager.h"
+#include "Interfaces/IPluginManager.h"
+#include "Misc/MessageDialog.h"
+#include "Misc/Paths.h"
+#include "Windows/WindowsPlatformProcess.h"
 
 #define LOCTEXT_NAMESPACE "FCognitoIdentityModule"
 

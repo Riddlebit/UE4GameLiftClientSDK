@@ -23,7 +23,13 @@ public class AWSCoreSDK : ModuleRules
         
         bool bHasAWSCoreSDK = System.IO.Directory.Exists(SDKDirectory);
 
-        if (!bHasAWSCoreSDK || Target.Type != TargetRules.TargetType.Client) return;
+        if (!bHasAWSCoreSDK || Target.Type != TargetRules.TargetType.Client)
+        {
+	        PublicDefinitions.Add("WITH_AWS_CORE=0");
+	        return;
+        }
+        
+        PublicDefinitions.Add("WITH_GAMELIFT=1");
 		
 		string AWSCoreLibFile = System.IO.Path.Combine(SDKDirectory, "aws-cpp-sdk-core.lib");
 		if (System.IO.File.Exists(AWSCoreLibFile))

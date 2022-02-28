@@ -10,23 +10,18 @@
   "DocsURL": "http://docs.aws.amazon.com/gamelift/latest/apireference/Welcome.html",
   "MarketplaceURL": "",
   "SupportURL": "",
-  "EnabledByDefault": true,
+  "EnabledByDefault": false,
   "CanContainContent": false,
   "IsBetaVersion": false,
-  "Installed": true,
+  "Installed": false,
   "Modules": [
     {
-      "Name": "AWSCore",
+      "Name": "AWSCoreSDK",
       "Type": "Runtime",
       "LoadingPhase": "PreDefault"
     },
     {
-      "Name": "GameLiftClientSDK",
-      "Type": "Runtime",
-      "LoadingPhase": "PreDefault"
-    },
-    {
-      "Name": "CognitoIdentity",
+      "Name": "CognitoIdentitySDK",
       "Type": "Runtime",
       "LoadingPhase": "PreDefault"
     }

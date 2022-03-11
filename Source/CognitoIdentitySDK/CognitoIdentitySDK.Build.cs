@@ -23,7 +23,13 @@ public class CognitoIdentitySDK : ModuleRules
         
         bool bHasCognitoIdentity = System.IO.Directory.Exists(SDKDirectory);
 
-        if (!bHasCognitoIdentity || Target.Type != TargetRules.TargetType.Client) return;
+        if (!bHasCognitoIdentity || Target.Type != TargetRules.TargetType.Client)
+        {
+	        PublicDefinitions.Add("WITH_COGNITO_IDENTITY=0");
+	        return;   
+        }
+        
+        PublicDefinitions.Add("WITH_COGNITO_IDENTITY=1");
         
 		string CognitoLibFile = System.IO.Path.Combine(SDKDirectory, "aws-cpp-sdk-cognito-identity.lib");
 		if (System.IO.File.Exists(CognitoLibFile))

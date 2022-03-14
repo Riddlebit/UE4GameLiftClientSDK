@@ -29,7 +29,7 @@ public class AWSCoreSDK : ModuleRules
 	        return;
         }
         
-        PublicDefinitions.Add("WITH_GAMELIFT=1");
+        PublicDefinitions.Add("WITH_AWS_CORE=1");
 		
 		string AWSCoreLibFile = System.IO.Path.Combine(SDKDirectory, "aws-cpp-sdk-core.lib");
 		if (System.IO.File.Exists(AWSCoreLibFile))

@@ -1,5 +1,6 @@
 #include "AWSCoreSDK.h"
 #include "Core.h"
+#include "Interfaces/IPluginManager.h"
 
 #define LOCTEXT_NAMESPACE "FAWSCoreSDKModule"
 

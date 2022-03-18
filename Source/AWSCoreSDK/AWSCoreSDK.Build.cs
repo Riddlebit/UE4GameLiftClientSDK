@@ -29,15 +29,11 @@ public class AWSCoreSDK : ModuleRules
 	        return;
         }
         
-        PublicDefinitions.Add("WITH_AWS_CORE=1");
         PublicDefinitions.AddRange( new []
         {
 	        "WITH_AWS_CORE=1",
 	        "USE_IMPORT_EXPORT=1",
-	        "USE_WINDOWS_DLL_SEMANTICS=1",
-	        "__clang_analyzer__=0",
-	        "AWS_DEEP_CHECKS=0",
-	        "AWS_USE_IO_COMPLETION_PORTS=0"
+	        "USE_WINDOWS_DLL_SEMANTICS=1"
         });
 		
 		string AWSCoreLibFile = System.IO.Path.Combine(SDKDirectory, "aws-cpp-sdk-core.lib");

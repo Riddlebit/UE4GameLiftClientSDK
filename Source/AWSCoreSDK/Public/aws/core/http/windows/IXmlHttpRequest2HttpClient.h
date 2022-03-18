@@ -1,17 +1,7 @@
-/*
-* Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-*
-* Licensed under the Apache License, Version 2.0 (the "License").
-* You may not use this file except in compliance with the License.
-* A copy of the License is located at
-*
-*  http://aws.amazon.com/apache2.0
-*
-* or in the "license" file accompanying this file. This file is distributed
-* on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-* express or implied. See the License for the specific language governing
-* permissions and limitations under the License.
-*/
+/**
+ * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0.
+ */
 
 #pragma once
 
@@ -20,7 +10,7 @@
 #include <aws/core/client/ClientConfiguration.h>
 #include <aws/core/utils/ResourceManager.h>
 
-#include <wrl.h> 
+#include <wrl.h>
 
 struct IXMLHTTPRequest2;
 
@@ -49,9 +39,9 @@ namespace Aws
             /**
              * Makes http request, returns http response.
              */
-            virtual std::shared_ptr<HttpResponse> MakeRequest(HttpRequest& request,
+            virtual std::shared_ptr<HttpResponse> MakeRequest(const std::shared_ptr<HttpRequest>& request,
                 Aws::Utils::RateLimits::RateLimiterInterface* readLimiter = nullptr,
-                Aws::Utils::RateLimits::RateLimiterInterface* writeLimiter = nullptr) const;
+                Aws::Utils::RateLimits::RateLimiterInterface* writeLimiter = nullptr) const override;
 
             /**
              * You must call this method before making any calls to the constructor, unless you have already
@@ -59,8 +49,23 @@ namespace Aws
              */
             static void InitCOM();
 
+            /**
+             * IXMLHTTPRequest2 doesn't support transfer-encoding:chunked
+             */
+            virtual bool SupportsChunkedTransferEncoding() const override { return false; }
+
+        protected:
+            /**
+             * Override any configuration on request handle.
+             * The usage is override this function in the subclass to configure whatever you want on request handle.
+             */
+            virtual void OverrideOptionsOnRequestHandle(const HttpRequestComHandle&) const {}
+
         private:
             void FillClientSettings(const HttpRequestComHandle&) const;
+
+            //we can't reuse these com objects like we do in other http clients, just put a new one back into the resource manager.
+            void ReturnHandleToResourceManager() const;
 
             mutable Aws::Utils::ExclusiveOwnershipResourceManager<HttpRequestComHandle> m_resourceManager;
             Aws::String m_proxyUserName;

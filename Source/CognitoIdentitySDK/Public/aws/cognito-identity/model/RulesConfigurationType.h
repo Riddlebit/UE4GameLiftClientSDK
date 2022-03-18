@@ -1,17 +1,7 @@
-﻿/*
-* Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-*
-* Licensed under the Apache License, Version 2.0 (the "License").
-* You may not use this file except in compliance with the License.
-* A copy of the License is located at
-*
-*  http://aws.amazon.com/apache2.0
-*
-* or in the "license" file accompanying this file. This file is distributed
-* on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-* express or implied. See the License for the specific language governing
-* permissions and limitations under the License.
-*/
+﻿/**
+ * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0.
+ */
 
 #pragma once
 #include <aws/cognito-identity/CognitoIdentity_EXPORTS.h>
@@ -26,6 +16,7 @@ namespace Utils
 namespace Json
 {
   class JsonValue;
+  class JsonView;
 } // namespace Json
 } // namespace Utils
 namespace CognitoIdentity
@@ -42,8 +33,8 @@ namespace Model
   {
   public:
     RulesConfigurationType();
-    RulesConfigurationType(const Aws::Utils::Json::JsonValue& jsonValue);
-    RulesConfigurationType& operator=(const Aws::Utils::Json::JsonValue& jsonValue);
+    RulesConfigurationType(Aws::Utils::Json::JsonView jsonValue);
+    RulesConfigurationType& operator=(Aws::Utils::Json::JsonView jsonValue);
     Aws::Utils::Json::JsonValue Jsonize() const;
 
 
@@ -52,6 +43,12 @@ namespace Model
      * <p>Rules are evaluated in order. The first one to match specifies the role.</p>
      */
     inline const Aws::Vector<MappingRule>& GetRules() const{ return m_rules; }
+
+    /**
+     * <p>An array of rules. You can specify up to 25 rules per identity provider.</p>
+     * <p>Rules are evaluated in order. The first one to match specifies the role.</p>
+     */
+    inline bool RulesHasBeenSet() const { return m_rulesHasBeenSet; }
 
     /**
      * <p>An array of rules. You can specify up to 25 rules per identity provider.</p>

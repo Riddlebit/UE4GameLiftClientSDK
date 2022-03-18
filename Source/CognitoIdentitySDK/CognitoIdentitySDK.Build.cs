@@ -12,7 +12,8 @@ public class CognitoIdentitySDK : ModuleRules
 			new []
 			{
 				"Core",
-				"Projects"
+				"Projects",
+				"AWSCoreSDK"
 			}
 		);
 

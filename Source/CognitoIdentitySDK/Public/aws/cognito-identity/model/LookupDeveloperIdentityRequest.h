@@ -1,17 +1,7 @@
-﻿/*
-* Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-*
-* Licensed under the Apache License, Version 2.0 (the "License").
-* You may not use this file except in compliance with the License.
-* A copy of the License is located at
-*
-*  http://aws.amazon.com/apache2.0
-*
-* or in the "license" file accompanying this file. This file is distributed
-* on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-* express or implied. See the License for the specific language governing
-* permissions and limitations under the License.
-*/
+﻿/**
+ * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0.
+ */
 
 #pragma once
 #include <aws/cognito-identity/CognitoIdentity_EXPORTS.h>
@@ -36,7 +26,7 @@ namespace Model
   {
   public:
     LookupDeveloperIdentityRequest();
-    
+
     // Service request name is the Operation name which will send this request out,
     // each operation should has unique request name, so that we can get operation's name from this request.
     // Note: this is not true for response, multiple operations may have the same response name,
@@ -52,6 +42,11 @@ namespace Model
      * <p>An identity pool ID in the format REGION:GUID.</p>
      */
     inline const Aws::String& GetIdentityPoolId() const{ return m_identityPoolId; }
+
+    /**
+     * <p>An identity pool ID in the format REGION:GUID.</p>
+     */
+    inline bool IdentityPoolIdHasBeenSet() const { return m_identityPoolIdHasBeenSet; }
 
     /**
      * <p>An identity pool ID in the format REGION:GUID.</p>
@@ -92,6 +87,11 @@ namespace Model
     /**
      * <p>A unique identifier in the format REGION:GUID.</p>
      */
+    inline bool IdentityIdHasBeenSet() const { return m_identityIdHasBeenSet; }
+
+    /**
+     * <p>A unique identifier in the format REGION:GUID.</p>
+     */
     inline void SetIdentityId(const Aws::String& value) { m_identityIdHasBeenSet = true; m_identityId = value; }
 
     /**
@@ -126,6 +126,13 @@ namespace Model
      * identifiers, in keeping with the number of users.</p>
      */
     inline const Aws::String& GetDeveloperUserIdentifier() const{ return m_developerUserIdentifier; }
+
+    /**
+     * <p>A unique ID used by your backend authentication process to identify a user.
+     * Typically, a developer identity provider would issue many developer user
+     * identifiers, in keeping with the number of users.</p>
+     */
+    inline bool DeveloperUserIdentifierHasBeenSet() const { return m_developerUserIdentifierHasBeenSet; }
 
     /**
      * <p>A unique ID used by your backend authentication process to identify a user.
@@ -178,6 +185,11 @@ namespace Model
     /**
      * <p>The maximum number of identities to return.</p>
      */
+    inline bool MaxResultsHasBeenSet() const { return m_maxResultsHasBeenSet; }
+
+    /**
+     * <p>The maximum number of identities to return.</p>
+     */
     inline void SetMaxResults(int value) { m_maxResultsHasBeenSet = true; m_maxResults = value; }
 
     /**
@@ -195,6 +207,16 @@ namespace Model
      * API again and get results starting from the 11th match.</p>
      */
     inline const Aws::String& GetNextToken() const{ return m_nextToken; }
+
+    /**
+     * <p>A pagination token. The first call you make will have <code>NextToken</code>
+     * set to null. After that the service will return <code>NextToken</code> values as
+     * needed. For example, let's say you make a request with <code>MaxResults</code>
+     * set to 10, and there are 20 matches in the database. The service will return a
+     * pagination token as a part of the response. This token can be used to call the
+     * API again and get results starting from the 11th match.</p>
+     */
+    inline bool NextTokenHasBeenSet() const { return m_nextTokenHasBeenSet; }
 
     /**
      * <p>A pagination token. The first call you make will have <code>NextToken</code>

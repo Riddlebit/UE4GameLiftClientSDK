@@ -1,17 +1,7 @@
-/*
-  * Copyright 2010-201 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-  *
-  * Licensed under the Apache License, Version 2.0 (the "License").
-  * You may not use this file except in compliance with the License.
-  * A copy of the License is located at
-  *
-  *  http://aws.amazon.com/apache2.0
-  *
-  * or in the "license" file accompanying this file. This file is distributed
-  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-  * express or implied. See the License for the specific language governing
-  * permissions and limitations under the License.
-  */
+/**
+ * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0.
+ */
 
 #pragma once
 
@@ -19,7 +9,7 @@
 
 #include <aws/core/http/Scheme.h>
 #include <aws/core/utils/memory/stl/AWSMap.h>
-#include <aws/core/utils/memory/stl/AWSString.h>
+#include <aws/core/utils/StringUtils.h>
 
 #include <stdint.h>
 
@@ -70,7 +60,7 @@ namespace Aws
             inline Scheme GetScheme() const { return m_scheme; }
 
             /**
-            * Sets scheme, if the port is incompaitible with this scheme, the port will automatically be set as well.
+            * Sets scheme, if the port is incompatible with this scheme, the port will automatically be set as well.
             */
             void SetScheme(Scheme value);
 
@@ -99,17 +89,55 @@ namespace Aws
             * Gets the path portion of the uri e.g. the portion after the first slash after the authority and prior to the
             * query string. This is not url encoded.
             */
-            inline const Aws::String& GetPath() const { return m_path; }
+            Aws::String GetPath() const;
 
             /**
             * Gets the path portion of the uri, url encodes it and returns it
             */
-            inline Aws::String GetURLEncodedPath() const { return URLEncodePath(m_path); }
+            Aws::String GetURLEncodedPath() const;
+
+            /**
+             * Gets the path portion of the uri, url encodes it according to RFC3986 and returns it.
+             */
+            Aws::String GetURLEncodedPathRFC3986() const;
 
             /**
             * Sets the path portion of the uri. URL encodes it if needed
             */
             void SetPath(const Aws::String& value);
+
+            /**
+             * Add a path segment to the uri.
+             * Leading slashes and trailing slashes will be removed.
+             * Use AddPathSegments() to enable trailing slashes.
+             */
+            template<typename T>
+            inline void AddPathSegment(T pathSegment)
+            {
+                Aws::StringStream ss;
+                ss << pathSegment;
+                Aws::String segment = ss.str();
+                segment.erase(0, segment.find_first_not_of('/'));
+                segment.erase(segment.find_last_not_of('/') + 1);
+                m_pathSegments.push_back(segment);
+                m_pathHasTrailingSlash = false;
+            }
+
+            /**
+             * Add path segments to the uri.
+             */
+            template<typename T>
+            inline void AddPathSegments(T pathSegments)
+            {
+                Aws::StringStream ss;
+                ss << pathSegments;
+                Aws::String segments = ss.str();
+                for (const auto& segment : Aws::Utils::StringUtils::Split(segments, '/'))
+                {
+                    m_pathSegments.push_back(segment);
+                }
+                m_pathHasTrailingSlash = (!segments.empty() && segments.back() == '/');
+            }
 
             /**
             * Gets the raw query string including the ?
@@ -124,7 +152,7 @@ namespace Aws
             Aws::String GetFormParameters() const;
 
             /**
-            * Cannonicalizes the query string.
+            * Canonicalizes the query string.
             */
             void CanonicalizeQueryString();
 
@@ -140,14 +168,25 @@ namespace Aws
             void AddQueryStringParameter(const char* key, const Aws::String& value);
 
             /**
+            * Adds multiple query string parameters to underlying query string.
+            */
+            void AddQueryStringParameter(const Aws::Map<Aws::String, Aws::String>& queryStringPairs);
+
+            /**
             * Converts the URI to a String usable for its context. e.g. an http request.
             */
             Aws::String GetURIString(bool includeQueryString = true) const;
 
             /**
              * URLEncodes the path portions of path (doesn't encode the "/" portion)
+             * Keeps the first and the last "/".
              */
             static Aws::String URLEncodePath(const Aws::String& path);
+
+            /**
+             * URLEncodes the path portion of the URI according to RFC3986
+             */
+            static Aws::String URLEncodePathRFC3986(const Aws::String& path);
 
         private:
             void ParseURIParts(const Aws::String& uri);
@@ -161,7 +200,8 @@ namespace Aws
             Scheme m_scheme;
             Aws::String m_authority;
             uint16_t m_port;
-            Aws::String m_path;
+            Aws::Vector<Aws::String> m_pathSegments;
+            bool m_pathHasTrailingSlash;
             Aws::String m_queryString;
         };
 

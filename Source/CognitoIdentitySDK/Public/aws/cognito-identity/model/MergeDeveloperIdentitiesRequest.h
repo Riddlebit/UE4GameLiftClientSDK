@@ -1,17 +1,7 @@
-﻿/*
-* Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-*
-* Licensed under the Apache License, Version 2.0 (the "License").
-* You may not use this file except in compliance with the License.
-* A copy of the License is located at
-*
-*  http://aws.amazon.com/apache2.0
-*
-* or in the "license" file accompanying this file. This file is distributed
-* on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-* express or implied. See the License for the specific language governing
-* permissions and limitations under the License.
-*/
+﻿/**
+ * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0.
+ */
 
 #pragma once
 #include <aws/cognito-identity/CognitoIdentity_EXPORTS.h>
@@ -36,7 +26,7 @@ namespace Model
   {
   public:
     MergeDeveloperIdentitiesRequest();
-    
+
     // Service request name is the Operation name which will send this request out,
     // each operation should has unique request name, so that we can get operation's name from this request.
     // Note: this is not true for response, multiple operations may have the same response name,
@@ -53,6 +43,12 @@ namespace Model
      * <code>DeveloperUserIdentifier</code>.</p>
      */
     inline const Aws::String& GetSourceUserIdentifier() const{ return m_sourceUserIdentifier; }
+
+    /**
+     * <p>User identifier for the source user. The value should be a
+     * <code>DeveloperUserIdentifier</code>.</p>
+     */
+    inline bool SourceUserIdentifierHasBeenSet() const { return m_sourceUserIdentifierHasBeenSet; }
 
     /**
      * <p>User identifier for the source user. The value should be a
@@ -101,6 +97,12 @@ namespace Model
      * <p>User identifier for the destination user. The value should be a
      * <code>DeveloperUserIdentifier</code>.</p>
      */
+    inline bool DestinationUserIdentifierHasBeenSet() const { return m_destinationUserIdentifierHasBeenSet; }
+
+    /**
+     * <p>User identifier for the destination user. The value should be a
+     * <code>DeveloperUserIdentifier</code>.</p>
+     */
     inline void SetDestinationUserIdentifier(const Aws::String& value) { m_destinationUserIdentifierHasBeenSet = true; m_destinationUserIdentifier = value; }
 
     /**
@@ -142,6 +144,15 @@ namespace Model
      * can use letters as well as period (.), underscore (_), and dash (-).</p>
      */
     inline const Aws::String& GetDeveloperProviderName() const{ return m_developerProviderName; }
+
+    /**
+     * <p>The "domain" by which Cognito will refer to your users. This is a (pseudo)
+     * domain name that you provide while creating an identity pool. This name acts as
+     * a placeholder that allows your backend and the Cognito service to communicate
+     * about the developer provider. For the <code>DeveloperProviderName</code>, you
+     * can use letters as well as period (.), underscore (_), and dash (-).</p>
+     */
+    inline bool DeveloperProviderNameHasBeenSet() const { return m_developerProviderNameHasBeenSet; }
 
     /**
      * <p>The "domain" by which Cognito will refer to your users. This is a (pseudo)
@@ -202,6 +213,11 @@ namespace Model
      * <p>An identity pool ID in the format REGION:GUID.</p>
      */
     inline const Aws::String& GetIdentityPoolId() const{ return m_identityPoolId; }
+
+    /**
+     * <p>An identity pool ID in the format REGION:GUID.</p>
+     */
+    inline bool IdentityPoolIdHasBeenSet() const { return m_identityPoolIdHasBeenSet; }
 
     /**
      * <p>An identity pool ID in the format REGION:GUID.</p>

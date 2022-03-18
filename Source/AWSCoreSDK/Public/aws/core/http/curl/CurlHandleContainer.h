@@ -1,17 +1,7 @@
-/*
-  * Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-  * 
-  * Licensed under the Apache License, Version 2.0 (the "License").
-  * You may not use this file except in compliance with the License.
-  * A copy of the License is located at
-  * 
-  *  http://aws.amazon.com/apache2.0
-  * 
-  * or in the "license" file accompanying this file. This file is distributed
-  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-  * express or implied. See the License for the specific language governing
-  * permissions and limitations under the License.
-  */
+/**
+ * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0.
+ */
 
 #pragma once
 
@@ -38,7 +28,8 @@ public:
       * Initializes an empty stack of CURL handles. If you are only making synchronous calls via your http client
       * then a small size is best. For async support, a good value would be 6 * number of Processors.   *
       */
-    CurlHandleContainer(unsigned maxSize = 50, long requestTimeout = 3000, long connectTimeout = 1000);
+    CurlHandleContainer(unsigned maxSize = 50, long httpRequestTimeout = 0, long connectTimeout = 1000, bool tcpKeepAlive = true,
+                        unsigned long tcpKeepAliveIntervalMs = 30000, long lowSpeedTime = 3000, unsigned long lowSpeedLimit = 1);
     ~CurlHandleContainer();
 
     /**
@@ -51,19 +42,29 @@ public:
       */
     void ReleaseCurlHandle(CURL* handle);
 
+    /**
+     * When the handle has bad DNS entries, problematic live connections, we need to destory the handle from pool.
+     */
+    void DestroyCurlHandle(CURL* handle);
+
 private:
     CurlHandleContainer(const CurlHandleContainer&) = delete;
     const CurlHandleContainer& operator = (const CurlHandleContainer&) = delete;
     CurlHandleContainer(const CurlHandleContainer&&) = delete;
     const CurlHandleContainer& operator = (const CurlHandleContainer&&) = delete;
 
+    CURL* CreateCurlHandleInPool();
     bool CheckAndGrowPool();
     void SetDefaultOptionsOnHandle(CURL* handle);
 
     Aws::Utils::ExclusiveOwnershipResourceManager<CURL*> m_handleContainer;
     unsigned m_maxPoolSize;
-    unsigned long m_requestTimeout;
+    unsigned long m_httpRequestTimeout;
     unsigned long m_connectTimeout;
+    bool m_enableTcpKeepAlive;
+    unsigned long m_tcpKeepAliveIntervalMs;
+    unsigned long m_lowSpeedTime;
+    unsigned long m_lowSpeedLimit;
     unsigned m_poolSize;
     std::mutex m_containerLock;
 };

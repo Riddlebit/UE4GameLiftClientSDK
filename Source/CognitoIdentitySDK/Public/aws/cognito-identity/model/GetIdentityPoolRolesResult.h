@@ -1,17 +1,7 @@
-﻿/*
-* Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-*
-* Licensed under the Apache License, Version 2.0 (the "License").
-* You may not use this file except in compliance with the License.
-* A copy of the License is located at
-*
-*  http://aws.amazon.com/apache2.0
-*
-* or in the "license" file accompanying this file. This file is distributed
-* on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-* express or implied. See the License for the specific language governing
-* permissions and limitations under the License.
-*/
+﻿/**
+ * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0.
+ */
 
 #pragma once
 #include <aws/cognito-identity/CognitoIdentity_EXPORTS.h>
@@ -163,7 +153,7 @@ namespace Model
      * <p>How users for a specific identity provider are to mapped to roles. This is a
      * String-to-<a>RoleMapping</a> object map. The string identifies the identity
      * provider, for example, "graph.facebook.com" or
-     * "cognito-idp-east-1.amazonaws.com/us-east-1_abcdefghi:app_client_id".</p>
+     * "cognito-idp.us-east-1.amazonaws.com/us-east-1_abcdefghi:app_client_id".</p>
      */
     inline const Aws::Map<Aws::String, RoleMapping>& GetRoleMappings() const{ return m_roleMappings; }
 
@@ -171,7 +161,7 @@ namespace Model
      * <p>How users for a specific identity provider are to mapped to roles. This is a
      * String-to-<a>RoleMapping</a> object map. The string identifies the identity
      * provider, for example, "graph.facebook.com" or
-     * "cognito-idp-east-1.amazonaws.com/us-east-1_abcdefghi:app_client_id".</p>
+     * "cognito-idp.us-east-1.amazonaws.com/us-east-1_abcdefghi:app_client_id".</p>
      */
     inline void SetRoleMappings(const Aws::Map<Aws::String, RoleMapping>& value) { m_roleMappings = value; }
 
@@ -179,7 +169,7 @@ namespace Model
      * <p>How users for a specific identity provider are to mapped to roles. This is a
      * String-to-<a>RoleMapping</a> object map. The string identifies the identity
      * provider, for example, "graph.facebook.com" or
-     * "cognito-idp-east-1.amazonaws.com/us-east-1_abcdefghi:app_client_id".</p>
+     * "cognito-idp.us-east-1.amazonaws.com/us-east-1_abcdefghi:app_client_id".</p>
      */
     inline void SetRoleMappings(Aws::Map<Aws::String, RoleMapping>&& value) { m_roleMappings = std::move(value); }
 
@@ -187,7 +177,7 @@ namespace Model
      * <p>How users for a specific identity provider are to mapped to roles. This is a
      * String-to-<a>RoleMapping</a> object map. The string identifies the identity
      * provider, for example, "graph.facebook.com" or
-     * "cognito-idp-east-1.amazonaws.com/us-east-1_abcdefghi:app_client_id".</p>
+     * "cognito-idp.us-east-1.amazonaws.com/us-east-1_abcdefghi:app_client_id".</p>
      */
     inline GetIdentityPoolRolesResult& WithRoleMappings(const Aws::Map<Aws::String, RoleMapping>& value) { SetRoleMappings(value); return *this;}
 
@@ -195,7 +185,7 @@ namespace Model
      * <p>How users for a specific identity provider are to mapped to roles. This is a
      * String-to-<a>RoleMapping</a> object map. The string identifies the identity
      * provider, for example, "graph.facebook.com" or
-     * "cognito-idp-east-1.amazonaws.com/us-east-1_abcdefghi:app_client_id".</p>
+     * "cognito-idp.us-east-1.amazonaws.com/us-east-1_abcdefghi:app_client_id".</p>
      */
     inline GetIdentityPoolRolesResult& WithRoleMappings(Aws::Map<Aws::String, RoleMapping>&& value) { SetRoleMappings(std::move(value)); return *this;}
 
@@ -203,7 +193,7 @@ namespace Model
      * <p>How users for a specific identity provider are to mapped to roles. This is a
      * String-to-<a>RoleMapping</a> object map. The string identifies the identity
      * provider, for example, "graph.facebook.com" or
-     * "cognito-idp-east-1.amazonaws.com/us-east-1_abcdefghi:app_client_id".</p>
+     * "cognito-idp.us-east-1.amazonaws.com/us-east-1_abcdefghi:app_client_id".</p>
      */
     inline GetIdentityPoolRolesResult& AddRoleMappings(const Aws::String& key, const RoleMapping& value) { m_roleMappings.emplace(key, value); return *this; }
 
@@ -211,7 +201,7 @@ namespace Model
      * <p>How users for a specific identity provider are to mapped to roles. This is a
      * String-to-<a>RoleMapping</a> object map. The string identifies the identity
      * provider, for example, "graph.facebook.com" or
-     * "cognito-idp-east-1.amazonaws.com/us-east-1_abcdefghi:app_client_id".</p>
+     * "cognito-idp.us-east-1.amazonaws.com/us-east-1_abcdefghi:app_client_id".</p>
      */
     inline GetIdentityPoolRolesResult& AddRoleMappings(Aws::String&& key, const RoleMapping& value) { m_roleMappings.emplace(std::move(key), value); return *this; }
 
@@ -219,7 +209,7 @@ namespace Model
      * <p>How users for a specific identity provider are to mapped to roles. This is a
      * String-to-<a>RoleMapping</a> object map. The string identifies the identity
      * provider, for example, "graph.facebook.com" or
-     * "cognito-idp-east-1.amazonaws.com/us-east-1_abcdefghi:app_client_id".</p>
+     * "cognito-idp.us-east-1.amazonaws.com/us-east-1_abcdefghi:app_client_id".</p>
      */
     inline GetIdentityPoolRolesResult& AddRoleMappings(const Aws::String& key, RoleMapping&& value) { m_roleMappings.emplace(key, std::move(value)); return *this; }
 
@@ -227,7 +217,7 @@ namespace Model
      * <p>How users for a specific identity provider are to mapped to roles. This is a
      * String-to-<a>RoleMapping</a> object map. The string identifies the identity
      * provider, for example, "graph.facebook.com" or
-     * "cognito-idp-east-1.amazonaws.com/us-east-1_abcdefghi:app_client_id".</p>
+     * "cognito-idp.us-east-1.amazonaws.com/us-east-1_abcdefghi:app_client_id".</p>
      */
     inline GetIdentityPoolRolesResult& AddRoleMappings(Aws::String&& key, RoleMapping&& value) { m_roleMappings.emplace(std::move(key), std::move(value)); return *this; }
 
@@ -235,7 +225,7 @@ namespace Model
      * <p>How users for a specific identity provider are to mapped to roles. This is a
      * String-to-<a>RoleMapping</a> object map. The string identifies the identity
      * provider, for example, "graph.facebook.com" or
-     * "cognito-idp-east-1.amazonaws.com/us-east-1_abcdefghi:app_client_id".</p>
+     * "cognito-idp.us-east-1.amazonaws.com/us-east-1_abcdefghi:app_client_id".</p>
      */
     inline GetIdentityPoolRolesResult& AddRoleMappings(const char* key, RoleMapping&& value) { m_roleMappings.emplace(key, std::move(value)); return *this; }
 
@@ -243,7 +233,7 @@ namespace Model
      * <p>How users for a specific identity provider are to mapped to roles. This is a
      * String-to-<a>RoleMapping</a> object map. The string identifies the identity
      * provider, for example, "graph.facebook.com" or
-     * "cognito-idp-east-1.amazonaws.com/us-east-1_abcdefghi:app_client_id".</p>
+     * "cognito-idp.us-east-1.amazonaws.com/us-east-1_abcdefghi:app_client_id".</p>
      */
     inline GetIdentityPoolRolesResult& AddRoleMappings(const char* key, const RoleMapping& value) { m_roleMappings.emplace(key, value); return *this; }
 

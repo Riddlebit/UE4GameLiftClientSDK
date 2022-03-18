@@ -1,17 +1,7 @@
-﻿/*
-* Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-*
-* Licensed under the Apache License, Version 2.0 (the "License").
-* You may not use this file except in compliance with the License.
-* A copy of the License is located at
-*
-*  http://aws.amazon.com/apache2.0
-*
-* or in the "license" file accompanying this file. This file is distributed
-* on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-* express or implied. See the License for the specific language governing
-* permissions and limitations under the License.
-*/
+﻿/**
+ * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0.
+ */
 
 #pragma once
 #include <aws/cognito-identity/CognitoIdentity_EXPORTS.h>
@@ -26,6 +16,7 @@ namespace Utils
 namespace Json
 {
   class JsonValue;
+  class JsonView;
 } // namespace Json
 } // namespace Utils
 namespace CognitoIdentity
@@ -42,8 +33,8 @@ namespace Model
   {
   public:
     Credentials();
-    Credentials(const Aws::Utils::Json::JsonValue& jsonValue);
-    Credentials& operator=(const Aws::Utils::Json::JsonValue& jsonValue);
+    Credentials(Aws::Utils::Json::JsonView jsonValue);
+    Credentials& operator=(Aws::Utils::Json::JsonView jsonValue);
     Aws::Utils::Json::JsonValue Jsonize() const;
 
 
@@ -51,6 +42,11 @@ namespace Model
      * <p>The Access Key portion of the credentials.</p>
      */
     inline const Aws::String& GetAccessKeyId() const{ return m_accessKeyId; }
+
+    /**
+     * <p>The Access Key portion of the credentials.</p>
+     */
+    inline bool AccessKeyIdHasBeenSet() const { return m_accessKeyIdHasBeenSet; }
 
     /**
      * <p>The Access Key portion of the credentials.</p>
@@ -91,6 +87,11 @@ namespace Model
     /**
      * <p>The Secret Access Key portion of the credentials</p>
      */
+    inline bool SecretKeyHasBeenSet() const { return m_secretKeyHasBeenSet; }
+
+    /**
+     * <p>The Secret Access Key portion of the credentials</p>
+     */
     inline void SetSecretKey(const Aws::String& value) { m_secretKeyHasBeenSet = true; m_secretKey = value; }
 
     /**
@@ -127,6 +128,11 @@ namespace Model
     /**
      * <p>The Session Token portion of the credentials</p>
      */
+    inline bool SessionTokenHasBeenSet() const { return m_sessionTokenHasBeenSet; }
+
+    /**
+     * <p>The Session Token portion of the credentials</p>
+     */
     inline void SetSessionToken(const Aws::String& value) { m_sessionTokenHasBeenSet = true; m_sessionToken = value; }
 
     /**
@@ -159,6 +165,11 @@ namespace Model
      * <p>The date at which these credentials will expire.</p>
      */
     inline const Aws::Utils::DateTime& GetExpiration() const{ return m_expiration; }
+
+    /**
+     * <p>The date at which these credentials will expire.</p>
+     */
+    inline bool ExpirationHasBeenSet() const { return m_expirationHasBeenSet; }
 
     /**
      * <p>The date at which these credentials will expire.</p>

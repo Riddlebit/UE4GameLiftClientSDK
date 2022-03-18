@@ -1,25 +1,19 @@
-/*
-* Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-*
-* Licensed under the Apache License, Version 2.0 (the "License").
-* You may not use this file except in compliance with the License.
-* A copy of the License is located at
-*
-*  http://aws.amazon.com/apache2.0
-*
-* or in the "license" file accompanying this file. This file is distributed
-* on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-* express or implied. See the License for the specific language governing
-* permissions and limitations under the License.
-*/
+/**
+ * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0.
+ */
 #pragma once
 
 #include <aws/core/utils/logging/LogLevel.h>
 #include <aws/core/utils/logging/LogSystemInterface.h>
+#include <aws/core/utils/logging/CRTLogSystem.h>
 #include <aws/core/utils/memory/MemorySystemInterface.h>
 #include <aws/core/utils/crypto/Factories.h>
 #include <aws/core/http/HttpClientFactory.h>
+#include <aws/core/monitoring/MonitoringManager.h>
 #include <aws/core/Core_EXPORTS.h>
+#include <aws/crt/io/Bootstrap.h>
+#include <aws/crt/io/TlsOptions.h>
 
 namespace Aws
 {
@@ -44,10 +38,16 @@ namespace Aws
         const char* defaultLogPrefix;
 
         /**
-         * Defaults to empty, if logLevel has been set and this field is empty, then the default log interface will be used.
+         * Defaults to empty, if logLevel has been set and this field is empty, then the default log system will be used.
          * otherwise, we will call this closure to create a logger
          */
          std::function<std::shared_ptr<Aws::Utils::Logging::LogSystemInterface>()> logger_create_fn;
+
+         /**
+          * Defaults to empty, if logLevel has been set and this field is empty, then the default CRT log system will be used.
+          * The default CRT log system will redirect all logs from common runtime libraries (CRT) to C++ SDK with the same log level and formatting.
+          */
+         std::function<std::shared_ptr<Aws::Utils::Logging::CRTLogSystemInterface>()> crt_logger_create_fn;
     };
 
     /**
@@ -64,6 +64,15 @@ namespace Aws
          * at startup time.
          */
         Aws::Utils::Memory::MemorySystemInterface* memoryManager;
+    };
+
+    /**
+     * SDK wide options for I/O: client bootstrap and TLS connection options
+     */
+    struct IoOptions
+    {
+        std::function<std::shared_ptr<Aws::Crt::Io::ClientBootstrap>()> clientBootstrap_create_fn;
+        std::function<std::shared_ptr<Aws::Crt::Io::TlsConnectionOptions>()> tlsConnectionOptions_create_fn;
     };
 
     /**
@@ -85,7 +94,7 @@ namespace Aws
         bool initAndCleanupCurl;
         /**
          * Installs a global SIGPIPE handler that logs the error and prevents it from terminating the current process.
-         * This can be used on operating systems on which CURL is being used. In some situations CURL cannot avoid 
+         * This can be used on operating systems on which CURL is being used. In some situations CURL cannot avoid
          * triggering a SIGPIPE.
          * For more information see: https://curl.haxx.se/libcurl/c/CURLOPT_NOSIGNAL.html
          * NOTE: CURLOPT_NOSIGNAL is already being set.
@@ -105,6 +114,10 @@ namespace Aws
          * If set, this closure will be used to create and install the factory.
          */
         std::function<std::shared_ptr<Aws::Utils::Crypto::HashFactory>()> md5Factory_create_fn;
+        /**
+        * If set, this closure will be used to create and install the factory.
+        */
+        std::function<std::shared_ptr<Aws::Utils::Crypto::HashFactory>()> sha1Factory_create_fn;
         /**
          * If set, this closure will be used to create and install the factory.
          */
@@ -135,11 +148,26 @@ namespace Aws
         std::function<std::shared_ptr<Aws::Utils::Crypto::SecureRandomFactory>()> secureRandomFactory_create_fn;
         /**
          * OpenSSL infects everything with its global state. If it is being used then we automatically initialize and clean it up.
-         * If this is a problem for you, set this to false. Be aware that if you don't use our init and cleanup and you are using 
+         * If this is a problem for you, set this to false. Be aware that if you don't use our init and cleanup and you are using
          * crypto functionality, you are responsible for installing thread locking, and loading strings and error messages.
          */
         bool initAndCleanupOpenSSL;
     };
+
+    /**
+    * MonitoringOptions is used to set up monitoring functionalities globally and(or) for users to customize monitoring listeners.
+    */
+    struct MonitoringOptions
+    {
+        /**
+         * These factory functions will be used to try to create customized monitoring listener factories, then be used to create monitoring listener instances.
+         * Based on functions and factory's implementation, it may fail to create an instance.
+         * If a function failed to create factory or a created factory failed to create an instance, SDK just ignore it.
+         * By default, SDK will try to create a default Client Side Monitoring Listener.
+         */
+        std::vector<Aws::Monitoring::MonitoringFactoryCreateFunction> customizedMonitoringFactory_create_fn;
+    };
+
 
     /**
      * You may notice that instead of taking pointers directly to your factories, we take a closure. This is because
@@ -184,6 +212,10 @@ namespace Aws
     struct SDKOptions
     {
         /**
+         * SDK wide options for I/O: client bootstrap and TLS connection options
+         */
+        IoOptions ioOptions;
+        /**
          * SDK wide options for logging
          */
         LoggingOptions loggingOptions;
@@ -199,6 +231,13 @@ namespace Aws
          * SDK wide options for crypto
          */
         CryptoOptions cryptoOptions;
+
+        /**
+         * Options used to set up customized monitoring implementations
+         * Put your monitoring factory in a closure (a create factory function) and put all closures in a vector.
+         * Basic usage can be found in aws-cpp-sdk-core-tests/monitoring/MonitoringTest.cpp
+         */
+        MonitoringOptions monitoringOptions;
     };
 
     /*
@@ -247,4 +286,3 @@ namespace Aws
      */
     AWS_CORE_API void ShutdownAPI(const SDKOptions& options);
 }
-

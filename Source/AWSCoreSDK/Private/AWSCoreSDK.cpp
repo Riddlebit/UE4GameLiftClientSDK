@@ -1,6 +1,8 @@
 #include "AWSCoreSDK.h"
-#include "Core.h"
+#if PLATFORM_WINDOWS && PLATFORM_64BITS && WITH_AWS_CORE
 #include "Interfaces/IPluginManager.h"
+#include "Misc/MessageDialog.h"
+#endif
 
 #define LOCTEXT_NAMESPACE "FAWSCoreSDKModule"
 

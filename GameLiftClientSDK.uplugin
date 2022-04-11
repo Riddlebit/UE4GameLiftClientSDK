@@ -13,20 +13,10 @@
   "EnabledByDefault": false,
   "CanContainContent": false,
   "IsBetaVersion": false,
-  "Installed": false,
+  "Installed": true,
   "Modules": [
     {
       "Name": "GameLiftClientSDK",
-      "Type": "Runtime",
-      "LoadingPhase": "PreDefault"
-    },
-    {
-      "Name": "AWSCoreSDK",
-      "Type": "Runtime",
-      "LoadingPhase": "PreDefault"
-    },
-    {
-      "Name": "CognitoIdentitySDK",
       "Type": "Runtime",
       "LoadingPhase": "PreDefault"
     }
